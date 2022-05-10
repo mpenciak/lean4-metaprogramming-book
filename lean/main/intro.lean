@@ -49,7 +49,7 @@ use the `partial` keyword if we're convinced that our function terminates. In
 the worst case scenario, our function gets stuck in a loop but the kernel is
 not reached/affected.
 
-Let's see some exemple use cases of metaprogramming in Lean.
+Let's see some example use cases of metaprogramming in Lean.
 
 ## Metaprogramming examples
 
@@ -119,11 +119,11 @@ declare _precedence_ when defining new syntax.
 -/
 
 declare_syntax_cat arith
-syntax num                  : arith -- nat for Arith.nat
-syntax str                  : arith -- strings for Arith.var
-syntax arith " + " arith    : arith -- Arith.add
-syntax:75 arith " * " arith : arith -- Arith.mul
-syntax " ( " arith " ) "    : arith -- bracketed expressions
+syntax num                        : arith -- nat for Arith.nat
+syntax str                        : arith -- strings for Arith.var
+syntax:50 arith:50 " + " arith:51 : arith -- Arith.add
+syntax:75 arith:75 " * " arith:76 : arith -- Arith.mul
+syntax " ( " arith " ) "          : arith -- bracketed expressions
 
 -- Auxiliary notation for translating `arith` into `term`
 syntax " ⟪ " arith " ⟫ " : term
@@ -137,22 +137,22 @@ macro_rules
   | `(⟪ ( $x ) ⟫)              => `( ⟪ $x ⟫ )
 
 #check ⟪ "x" * "y" ⟫
--- Arith.mul (Arith.symbol "x") (Arith.symbol "y")
+-- Arith.mul (Arith.var "x") (Arith.var "y")
 
 #check ⟪ "x" + "y" ⟫
--- Arith.add (Arith.symbol "x") (Arith.symbol "y") 
+-- Arith.add (Arith.var "x") (Arith.var "y") 
 
 #check ⟪ "x" + 20 ⟫
--- Arith.add (Arith.symbol "x") (Arith.int 20)
+-- Arith.add (Arith.var "x") (Arith.nat 20)
 
 #check ⟪ "x" + "y" * "z" ⟫ -- precedence
--- Arith.add (Arith.symbol "x") (Arith.mul (Arith.symbol "y") (Arith.symbol "z"))
+-- Arith.add (Arith.var "x") (Arith.mul (Arith.var "y") (Arith.var "z"))
 
 #check ⟪ "x" * "y" + "z" ⟫ -- precedence
--- Arith.add (Arith.mul (Arith.symbol "x") (Arith.symbol "y")) (Arith.symbol "z")
+-- Arith.mul (Arith.var "x") (Arith.add (Arith.var "y") (Arith.var "z"))
 
 #check ⟪ ("x" + "y") * "z" ⟫ -- brackets
--- Arith.mul (Arith.add (Arith.symbol "x") (Arith.symbol "y")) (Arith.symbol "z")
+-- Arith.mul (Arith.add (Arith.var "x") (Arith.var "y")) (Arith.var "z")
 
 /-!
 ### Writing our own tactic
