@@ -20,7 +20,7 @@ named "Nat.succ" and a constant named "Nat.zero".
 
 That example gives us an idea of what we're aiming at: we use expressions to
 represent all lean terms at the meta level. Let's check the precise definition
-of [`Expr`](https://github.com/leanprover/lean4/blob/master/src/Lean/Expr.lean).
+of [`Expr`](https://github.com/leanprover/lean4/blob/master/src/Lean/Expr.lean#L238).
 -/
 
 namespace Playground
